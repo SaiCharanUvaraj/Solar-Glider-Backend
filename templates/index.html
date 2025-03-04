@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSocket Sensor Data</title>
+    <title>Drone Sensor Data</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
     <style>
         body {
@@ -18,54 +18,88 @@
         }
         .container {
             text-align: center;
-            padding: 20px;
-            border-radius: 12px;
+            display:flex;
+            border-radius: 8px;
             background: rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
-            width: 90%;
-            max-width: 400px;
         }
         h1 {
             font-size: 24px;
             margin-bottom: 15px;
         }
         .data-box {
+            padding:20px;
+            display:flex;
+            align-items:center;
+            justify-content:center;
             background: rgba(255, 255, 255, 0.2);
-            padding: 15px;
-            border-radius: 8px;
+            border-radius: 8px 0px 0px 8px;
             text-align: left;
             font-size: 18px;
-        }
-        .data-box p {
-            margin: 10px 0;
         }
         .highlight {
             font-weight: bold;
             color: #ffeb3b;
         }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(20, 20px);
+            grid-template-rows: repeat(20, 20px);
+            gap: 2px;
+            margin: 20px auto;
+            width: max-content;
+        }
+        .cell {
+            width: 20px;
+            height: 20px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+        }
+        .drone {
+            background-color: red;
+        }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1>Latest Sensor Data</h1>
         <div class="data-box">
-            <p>🌡️ Temperature: <span class="highlight" id="temperature">Loading...</span></p>
-            <p>💧 Humidity: <span class="highlight" id="humidity">Loading...</span></p>
+            <div>
+            <p>Battery: <span class="highlight" id="battery">0</span>%</p>
+            <p>Cleaned Panels: <span class="highlight" id="cleaned">0</span></p>
+            <p>Gyro: Pitch <span class="highlight" id="pitch">0</span>°, Roll <span class="highlight" id="roll">0</span>°, Yaw <span class="highlight" id="yaw">0</span>°</p>
+            </div>
+        </div>
+        <div>
+            <h1>Drone Location</h1>
+            <div class="grid" id="grid"></div>
         </div>
     </div>
-
     <script>
-        var socket = io.connect(window.location.origin, {
-            transports: ["websocket", "polling"]
-        });
+        var socket = io.connect(window.location.origin, { transports: ["websocket", "polling"] });
+
+        function createGrid(x, y) {
+            let grid = document.getElementById("grid");
+            grid.innerHTML = ""; 
+            for (let i = 0; i < 20; i++) {
+                for (let j = 0; j < 20; j++) {
+                    let cell = document.createElement("div");
+                    cell.classList.add("cell");
+                    if (i === y && j === x) {
+                        cell.classList.add("drone");
+                    }
+                    grid.appendChild(cell);
+                }
+            }
+        }
         socket.on("update_data", function(data) {
-            // Extract values safely
-            document.getElementById("temperature").innerText = data.temperature ? data.temperature + "°C" : "N/A";
-            document.getElementById("humidity").innerText = data.humidity ? data.humidity + "%" : "N/A";
+            document.getElementById("battery").innerText = data.battery_percentage;
+            document.getElementById("cleaned").innerText = data.cleaned_panels;
+            document.getElementById("pitch").innerText = data.gyro.pitch;
+            document.getElementById("roll").innerText = data.gyro.roll;
+            document.getElementById("yaw").innerText = data.gyro.yaw;
+            createGrid(data.grid_location[0], data.grid_location[1]);
         });
     </script>
-
 </body>
 </html>
