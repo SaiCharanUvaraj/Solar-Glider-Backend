@@ -23,6 +23,8 @@
             background: rgba(255, 255, 255, 0.1);
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             backdrop-filter: blur(10px);
+            padding:10px;
+            gap:10px;
         }
         h1 {
             font-size: 24px;
@@ -34,7 +36,7 @@
             align-items:center;
             justify-content:center;
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 8px 0px 0px 8px;
+            border-radius: 8px 8px 8px 8px;
             text-align: left;
             font-size: 18px;
         }
@@ -47,8 +49,6 @@
             grid-template-columns: repeat(20, 20px);
             grid-template-rows: repeat(20, 20px);
             gap: 2px;
-            margin: 20px auto;
-            width: max-content;
         }
         .cell {
             width: 20px;
@@ -67,7 +67,7 @@
             <div>
             <p>Battery: <span class="highlight" id="battery">0</span>%</p>
             <p>Cleaned Panels: <span class="highlight" id="cleaned">0</span></p>
-            <p>Gyro: Pitch <span class="highlight" id="pitch">0</span>°, Roll <span class="highlight" id="roll">0</span>°, Yaw <span class="highlight" id="yaw">0</span>°</p>
+            <p>Gyro: <br> Pitch <span class="highlight" id="pitch">0</span>°, <br> Roll <span class="highlight" id="roll">0</span>°, <br> Yaw <span class="highlight" id="yaw">0</span>°</p>
             </div>
         </div>
         <div>
