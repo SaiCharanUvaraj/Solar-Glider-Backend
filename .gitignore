@@ -1,0 +1,37 @@
+# Ignore Python bytecode files
+__pycache__/
+*.py[cod]
+
+# Ignore virtual environment
+venv/
+env/
+
+# Ignore IDE/editor config files
+.vscode/
+.idea/
+*.sublime-workspace
+
+# Ignore log files
+*.log
+
+# Ignore compiled C extensions
+*.so
+
+# Ignore database files
+*.sqlite3
+*.db
+
+# Ignore dependency files
+Pipfile
+Pipfile.lock
+
+# Ignore environment variable files
+.env
+.env.local
+.env.*.local
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore node_modules (if frontend exists)
+node_modules/
