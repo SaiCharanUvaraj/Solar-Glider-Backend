@@ -3,22 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebSocket Data</title>
+    <title>WebSocket Sensor Data</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.1/socket.io.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            margin: 0;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            width: 90%;
+            max-width: 400px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        .data-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 18px;
+        }
+        .data-box p {
+            margin: 10px 0;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #ffeb3b;
+        }
+    </style>
 </head>
 <body>
-    <h1>Latest Sensor Data</h1>
-    <p id="sensor-data">Waiting for data...</p>
+
+    <div class="container">
+        <h1>Latest Sensor Data</h1>
+        <div class="data-box">
+            <p>🌡️ Temperature: <span class="highlight" id="temperature">Loading...</span></p>
+            <p>💧 Humidity: <span class="highlight" id="humidity">Loading...</span></p>
+        </div>
+    </div>
 
     <script>
-        // Use the correct WebSocket connection URL dynamically
         var socket = io.connect(window.location.origin, {
             transports: ["websocket", "polling"]
         });
-
         socket.on("update_data", function(data) {
-            document.getElementById("sensor-data").innerText = JSON.stringify(data);
+            // Extract values safely
+            document.getElementById("temperature").innerText = data.temperature ? data.temperature + "°C" : "N/A";
+            document.getElementById("humidity").innerText = data.humidity ? data.humidity + "%" : "N/A";
         });
     </script>
+
 </body>
 </html>
